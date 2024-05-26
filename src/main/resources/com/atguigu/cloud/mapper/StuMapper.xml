@@ -1,0 +1,37 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.cloud.mapper.StuMapper">
+
+    <update id="update">
+        update stu
+        <set>
+            <if test="stname !=null">
+                stname=#{stname}
+            </if>
+            <if test="gender !=null">
+                ,gender =#{gender}
+            </if>
+            <if test="grad !=null">
+                ,grad =#{grad}
+            </if>
+            <if test="major !=null">
+                ,major =#{major}
+            </if>
+            <if test="hometown !=null">
+                ,hometown =#{hometown}
+            </if>
+
+            <if test="birthday !=null">
+                ,birthday=#{birthday}
+            </if>
+            <if test="isReside !=null">
+                ,isReside =#{isReside}
+            </if>
+        </set>
+        where stno =#{stno}
+    </update>
+    <select id="getStu" resultType="String">
+        select stno from stu where isReside=0 and stno like concat('%',#{stno},'%')
+    </select>
+</mapper>

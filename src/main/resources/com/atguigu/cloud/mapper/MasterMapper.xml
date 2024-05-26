@@ -1,0 +1,41 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.cloud.mapper.MasterMapper">
+
+    <insert id="add">
+        insert into master (id,name,phone,gender)
+        values (#{id},#{name},#{phone},#{gender});
+    </insert>
+
+    <update id="update">
+        update master
+        <set>
+            <if test="name !=null">
+                name=#{name}
+            </if>
+            <if test="phone !=null">
+                ,phone =#{phone}
+            </if>
+            <if test="gender !=null">
+                ,gender=#{gender}
+            </if>
+        </set>
+        where id =#{id}
+    </update>
+
+    <select id="getBySome" resultType="com.atguigu.cloud.pojo.Master">
+        select * from master
+        <where>
+            <if test="id!=null">
+                id=#{id}
+            </if>
+            <if test="name !=null">
+                and name = #{name}
+            </if>
+            <if test="gender !=null">
+                and gender = #{gender}
+            </if>
+        </where>
+    </select>
+</mapper>
