@@ -12,5 +12,5 @@ public class Room {
     private Integer num;
     private Integer cnum;
     private  Integer did;
-    private  String type;
+    private  Integer type;
 }

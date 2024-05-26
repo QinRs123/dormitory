@@ -98,7 +98,11 @@ const stuDelete=async(row)=>{
             <el-table-column label="床位数" prop="num"></el-table-column>
             <el-table-column label="已入住人数" prop="cnum"></el-table-column>
             <el-table-column label="宿舍楼号" prop="did"></el-table-column>
-            <el-table-column label="类型" prop="type"></el-table-column>
+            <el-table-column label="类型" prop="type">
+                <template #default="{ row }">
+                    {{ row.type===1?"男寝":"女寝" }}
+                </template>
+            </el-table-column>
             <el-table-column label="操作" width="100">
                 <template #default="{ row  }">
                     <el-button :icon="Edit" circle plain type="primary" @click="showDialog(row)" ></el-button>

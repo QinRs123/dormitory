@@ -101,9 +101,10 @@ const enterRow = async (row, culumn, cell, event) => {
             // Vue.set(roommates, 'value', {});
         }
         else if (data.length != 0) {
-            data.unshift({ "stname": "舍友:" });
+            data.unshift({ "stname": `宿舍号:${data[0].rid}` });
             roommates.value = data;
             box.style.display = "block"
+            box.style.position = "fixed";
         }
 
     } catch {
@@ -135,6 +136,20 @@ document.addEventListener('DOMContentLoaded', function () {
     })
 })
 
+watch(roommates, (newValue, oldValue) => {
+        let rowList = document.querySelectorAll('.rowList');
+        rowList.forEach(list => {
+            list.onmousemove = (e) => {
+                list.style.zIndex = "0";
+                let x = e.clientX;
+                let y = e.clientY;
+                box.style.top = y + 15 + "px";
+                box.style.left = x + 15 + "px";
+                console.log(x,y)
+            }
+        });
+    },{deep:true})
+
 </script>
 
 <template>
@@ -152,9 +167,17 @@ document.addEventListener('DOMContentLoaded', function () {
             <el-table-column label="序号" width="100" type="index"> </el-table-column>
             <el-table-column label="学号" prop="stno"></el-table-column>
             <el-table-column label="姓名" prop="stname"></el-table-column>
-            <el-table-column label="姓别" prop="gender"></el-table-column>
+            <el-table-column label="姓别" prop="gender">
+                <template #default="{ row }">
+                    {{ row.gender===1?"男":"女" }}
+                </template>
+            </el-table-column>
             <el-table-column label="年级" prop="grad"></el-table-column>
-            <el-table-column label="是否入住" prop="isReside"></el-table-column>
+            <el-table-column label="是否入住" prop="isReside">
+                <template #default="{ row }">
+                    {{ row.isReside===1?"是":"否" }}
+                </template>
+            </el-table-column>
             <el-table-column label="操作" width="100">
                 <template #default="{ row }">
                     <el-button :icon="Edit" circle plain type="primary" @click="showDialog(row)"></el-button>
@@ -209,7 +232,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div id="box">
         <ul>
             <li v-for="roommate in roommates">
-                {{ roommate.stname }}
+                {{ roommate.sid }} {{ roommate.stname }}
             </li>
         </ul>
     </div>

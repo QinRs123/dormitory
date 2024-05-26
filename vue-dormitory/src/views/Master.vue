@@ -99,7 +99,11 @@ const deleteMaster= async(row)=>{
             <el-table-column label="宿管编号" prop="id"></el-table-column>
             <el-table-column label="宿管姓名" prop="name"></el-table-column>
             <el-table-column label="宿管电话" prop="phone"></el-table-column>
-            <el-table-column label="宿管性别" prop="gender"></el-table-column>
+            <el-table-column label="宿管性别" prop="gender">
+                <template #default="{ row }">
+                    {{ row.gender===1?"男":"女" }}
+                </template>
+            </el-table-column>
             <el-table-column label="操作" width="100">
                 <template #default="{ row }">
                     <el-button :icon="Edit" circle plain type="primary"  @click="showDialog(row)"></el-button>
