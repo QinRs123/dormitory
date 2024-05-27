@@ -19,4 +19,6 @@ public interface ResideService {
     Reside getBySid(String stno);
 
     List<Reside> getByRid(String id);
+
+
 }

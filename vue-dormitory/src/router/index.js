@@ -9,6 +9,8 @@ import dormitoryVue from '@/views/dormitory.vue'
 import RoomVue from '@/views/Room.vue'
 import StuVue from '@/views/Stu.vue'
 import ResideVue from '@/views/Reside.vue'
+import RoomShowVue from '@/views/show/RoomShow.vue'
+import DormShowVue from '@/views/show/dormShow.vue'
 
 
 //定义路由关系
@@ -20,6 +22,8 @@ const routes = [
         {path: '/room', component: RoomVue },
         {path: '/stu', component: StuVue },
         { path: '/reside', component: ResideVue },
+        { path: '/RoomShowVue', component: RoomShowVue },
+        { path: '/DormShowVue', component: DormShowVue },
     ]  },
     // { path: '/dormitory', component: dormitoryVue },
     // { path: '/room', component: RoomVue },

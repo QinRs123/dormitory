@@ -23,6 +23,17 @@ const getAllDorm = async () => {
 }
 getAllDorm();
 
+
+import { dormInfo} from '@/stores/dorm.js'
+import {useRouter} from 'vue-router'
+const router =useRouter()
+const showDorm=(row)=>{
+    let dormStore = dormInfo()
+    dormStore.setDorm(row.id)
+    console.log(dormStore.dorm)
+    router.push('/DormShowVue')
+}
+
 //控制添加分类弹窗
 const dialogVisible = ref(false)
 //添加分类数据模型
@@ -96,8 +107,9 @@ const dormDelete=async(row)=>{
             <el-table-column label="楼层数" prop="fnum"></el-table-column>
             <el-table-column label="地理位置" prop="location"></el-table-column>
             <el-table-column label="管理员号" prop="mid"></el-table-column>
-            <el-table-column label="操作" width="100">
+            <el-table-column label="操作" width="200">
                 <template #default="{ row }">
+                    <el-button :icon="Edit" circle plain type="button"  @click="showDorm(row)"></el-button>
                     <el-button :icon="Edit" circle plain type="primary"  @click="showDialog(row)"></el-button>
                     <el-button :icon="Delete" circle plain type="danger" @click="dormDelete(row)"></el-button>
                 </template>

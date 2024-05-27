@@ -19,3 +19,7 @@ export const deleteService = (id)=>{
 export const getnotFull = (search)=>{
     return request.post('/room/getnotFull',search)
 }
+
+export const getByDidService = (id)=>{
+    return request.get('/room/getByDid'+'/'+id)
+}

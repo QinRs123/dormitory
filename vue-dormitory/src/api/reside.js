@@ -22,3 +22,15 @@ export const resideUpdateService = (ResideModel)=>{
 export const resideDeleteService = (id)=>{
     return request.get('/reside/delete'+'/'+id)
 }
+
+export const resideShowBoysService = ()=>{
+    return request.get('/reside/getBoys')
+}
+
+export const resideShowGirlsService = ()=>{
+    return request.get('/reside/getGirls')
+}
+
+export const resideByRidService = (id)=>{
+    return request.get('/reside/getByRid'+'/'+id)
+}

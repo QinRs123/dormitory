@@ -13,6 +13,8 @@ const reside = ref([
         "sid": "美食",
         'stname': 'hh',
         "rid": "my",
+        "type": "noful",
+        "did" : 1
 
     },
     {
@@ -20,13 +22,15 @@ const reside = ref([
         "sid": "娱乐",
         'stname': 'hh',
         "rid": "yl",
+        "type": "noful",
+        "did" : 1
     },
 ])
 const snoList = ref();
 const rnoList = ref();
 
 //获取所有文章分类数据
-import { resideListService, resideAddService, resideUpdateService, resideDeleteService } from '@/api/reside.js'
+import { resideListService, resideAddService, resideUpdateService, resideDeleteService ,resideShowBoysService,resideShowGirlsService} from '@/api/reside.js'
 const getAllReside = async () => {
     let result = await resideListService();
     console.log(result.data)
@@ -142,6 +146,19 @@ const choose = (sno) => {
 const chooserid=(rno)=>{
     ResideModel.value.rid = rno;
 }
+
+const showBoys=async()=>{
+    let result  = await resideShowBoysService();
+    console.log(result.data)
+    reside.value = result.data;
+}
+
+const showGirls=async()=>{
+    let result  = await resideShowGirlsService();
+    console.log(result.data)
+    reside.value = result.data;
+}
+
 </script>
 
 
@@ -153,9 +170,15 @@ const chooserid=(rno)=>{
             <div class="header">
                 <span>住宿表</span>
                 <div class="extra">
+                    <el-button type="button"
+                        @click="getAllReside">all</el-button>
+                    <el-button type="button"
+                        @click="showGirls">女寝</el-button>
+                    <el-button type="button"
+                        @click="showBoys">男寝</el-button>
                     <el-button type="primary"
                         @click="dialogVisible = true, dialogVisible1 = true, title = '添加'">添加</el-button>
-                </div>
+                    </div>
             </div>
         </template>
 
@@ -164,6 +187,12 @@ const chooserid=(rno)=>{
             <el-table-column label="学号" prop="sid"></el-table-column>
             <el-table-column label="学生姓名" prop="stname"></el-table-column>
             <el-table-column label="宿舍号" prop="rid"></el-table-column>
+            <el-table-column label="类型" prop="type">
+                <template #default="{ row }">
+                    {{ row.type===1?"男寝":"女寝" }}
+                </template>
+            </el-table-column>
+            <el-table-column label="宿舍楼号" prop="did"></el-table-column>
             <el-table-column label="操作" width="100">
                 <template #default="{ row }">
                     <el-button :icon="Edit" circle plain type="primary" @click="showDialog(row)"></el-button>

@@ -1,9 +1,6 @@
 package com.atguigu.cloud.controller;
 
-import com.atguigu.cloud.pojo.Reside;
-import com.atguigu.cloud.pojo.Result;
-import com.atguigu.cloud.pojo.Room;
-import com.atguigu.cloud.pojo.Stu;
+import com.atguigu.cloud.pojo.*;
 import com.atguigu.cloud.service.ResideService;
 import com.atguigu.cloud.service.RoomService;
 import com.atguigu.cloud.service.StuService;
@@ -11,6 +8,7 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -27,12 +25,20 @@ public class ResideController {
     @Resource
     private RoomService roomService;
 
+
+
     @PostMapping("/add")
     public Result add(@RequestBody Reside dorm){
         Stu stu=stuService.getById(dorm.getSid());
         Room room= roomService.getById(dorm.getRid());
         if(stu==null||room==null){
             return Result.error("学号不对或者宿舍号不对");
+        }
+        if(stu.getGender()!=room.getType()){
+            return Result.error("学生性别与宿舍类型不匹配");
+        }
+        if(stu.getIsReside()!=0){
+            return Result.error("该学生已经在别的宿舍居住了");
         }
         if(room.getNum()==room.getCnum()){
             return Result.error("宿舍已满人，请选择别的宿舍");
@@ -53,7 +59,87 @@ public class ResideController {
     @GetMapping("/getAll")
     public Result getAll(){
         List<Reside> list =resideService.getAll();
-        return Result.success(list);
+        List<ResideShow> resideShows=new ArrayList<>();
+        for (Reside reside : list) {
+            Stu stu = stuService.getById(reside.getSid());
+            Room room = roomService.getById(reside.getRid());
+            ResideShow reShow =new ResideShow();
+            reShow.setId(reside.getId());
+            reShow.setSid(stu.getStno());
+            reShow.setStname(stu.getStname());
+            reShow.setRid(room.getId());
+            reShow.setType(room.getType());
+            reShow.setDid(room.getDid());
+
+            resideShows.add(reShow);
+        }
+        return Result.success(resideShows);
+    }
+    @GetMapping("/getByRid/{id}")
+    public Result getByRid(@PathVariable("id") String id){
+        List<Reside> list =resideService.getByRid(id);
+        System.out.println(list);
+        List<ResideShow> resideShows=new ArrayList<>();
+        for (Reside reside : list) {
+            Stu stu = stuService.getById(reside.getSid());
+            Room room = roomService.getById(reside.getRid());
+            ResideShow reShow =new ResideShow();
+            reShow.setId(reside.getId());
+            reShow.setSid(stu.getStno());
+            reShow.setStname(stu.getStname());
+            reShow.setRid(room.getId());
+            reShow.setType(room.getType());
+            reShow.setDid(room.getDid());
+            resideShows.add(reShow);
+        }
+        System.out.println(resideShows);
+        return Result.success(resideShows);
+    }
+
+    @GetMapping("/getBoys")
+    public Result getBoys(){
+        List<Reside> list =resideService.getAll();
+        List<ResideShow> resideShows=new ArrayList<>();
+        for (Reside reside : list) {
+
+            Stu stu = stuService.getById(reside.getSid());
+            Room room = roomService.getById(reside.getRid());
+            if(room.getType()!=1){
+                continue;
+            }
+            ResideShow reShow =new ResideShow();
+            reShow.setId(reside.getId());
+            reShow.setSid(stu.getStno());
+            reShow.setStname(stu.getStname());
+            reShow.setRid(room.getId());
+            reShow.setType(room.getType());
+            reShow.setDid(room.getDid());
+            resideShows.add(reShow);
+        }
+        return Result.success(resideShows);
+    }
+
+    @GetMapping("/getGirls")
+    public Result getGirls(){
+        List<Reside> list =resideService.getAll();
+        List<ResideShow> resideShows=new ArrayList<>();
+        for (Reside reside : list) {
+
+            Stu stu = stuService.getById(reside.getSid());
+            Room room = roomService.getById(reside.getRid());
+            if(room.getType()!=2){
+                continue;
+            }
+            ResideShow reShow =new ResideShow();
+            reShow.setId(reside.getId());
+            reShow.setSid(stu.getStno());
+            reShow.setStname(stu.getStname());
+            reShow.setRid(room.getId());
+            reShow.setType(room.getType());
+            reShow.setDid(room.getDid());
+            resideShows.add(reShow);
+        }
+        return Result.success(resideShows);
     }
 
     @GetMapping("/delete/{id}")
@@ -91,6 +177,7 @@ public class ResideController {
         if(byId1==null){
             return Result.error("宿舍号错误...");
         }
+
 
         if(byId1.getNum()==byId1.getCnum()){
             return Result.error("宿舍已满人，请选择别的宿舍");

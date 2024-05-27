@@ -59,6 +59,12 @@ public class RoomController {
         }
         return Result.error("删除失败");
     }
+
+    @GetMapping("/getByDid/{id}")
+    public Result getByDid(@PathVariable("id") Integer id){
+        List<Room> list=roomService.getByDid(id);
+        return Result.success(list);
+    }
 //
     //
     @PostMapping("/update")

@@ -56,6 +56,19 @@ const showDialog=(row)=>{
     roomModel.value.type=row.type
 }
 
+
+import { roomInfo} from '@/stores/room.js'
+import {useRouter} from 'vue-router'
+const router =useRouter()
+const showRoom=(row)=>{
+    let roomStore = roomInfo()
+    roomStore.setRoom(row.id)
+    console.log(roomStore.room)
+    router.push('/RoomShowVue')
+}
+
+
+
 const addStu=async()=>{
     let result = await roomAddService(roomModel.value);
     console.log(result.data)
@@ -103,12 +116,14 @@ const stuDelete=async(row)=>{
                     {{ row.type===1?"男寝":"女寝" }}
                 </template>
             </el-table-column>
-            <el-table-column label="操作" width="100">
+            <el-table-column label="操作" width="200">
                 <template #default="{ row  }">
+                    <el-button :icon="Edit" circle plain type="button" @click="showRoom(row)" ></el-button>
                     <el-button :icon="Edit" circle plain type="primary" @click="showDialog(row)" ></el-button>
                     <el-button :icon="Delete" circle plain type="danger" @click= "stuDelete(row)"></el-button>
                 </template>
             </el-table-column>
+            
             <template #empty>
                 <el-empty description="没有数据" />
             </template>
