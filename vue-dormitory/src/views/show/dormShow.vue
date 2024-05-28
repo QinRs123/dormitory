@@ -72,6 +72,7 @@ const showDialog=(row)=>{
 
 
 const addStu=async()=>{
+    roomModel.value.did=dormStore.dorm
     let result = await roomAddService(roomModel.value);
     console.log(result.data)
     console.log("add...")
@@ -94,6 +95,13 @@ const stuDelete=async(row)=>{
     getAllRoom();
 }
 
+import { roomInfo} from '@/stores/room.js'
+const showRoom=(row)=>{
+    let roomStore = roomInfo()
+    roomStore.setRoom(row.id)
+    console.log(roomStore.room)
+    router.push('/RoomShowVue')
+}
 
 </script>
 
@@ -140,16 +148,16 @@ const stuDelete=async(row)=>{
             <!-- 添加文章表单 -->
             <el-form :model="roomModel" label-width="100px" >
                 <el-form-item label="宿舍号" >
-                    <el-input v-model="roomModel.id" placeholder="宿舍号"></el-input>
+                    <el-input v-model="roomModel.id" placeholder="宿舍号 (例： 楼号-×0×)"></el-input>
                 </el-form-item>
 
                 <el-form-item label="床位数" >
                     <el-input v-model="roomModel.num" placeholder="床位数"></el-input>
                 </el-form-item>
 
-                <el-form-item label="宿舍楼号" >
+                <!-- <el-form-item label="宿舍楼号" >
                     <el-input v-model="roomModel.did" placeholder="宿舍楼号"></el-input>
-                </el-form-item>
+                </el-form-item> -->
                 
                 <el-form-item label="类型" >
                     <el-input v-model="roomModel.type" placeholder="类型"></el-input>
