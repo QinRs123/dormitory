@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.33, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: db_dormitory
+-- Host: 127.0.0.1    Database: dormitory
 -- ------------------------------------------------------
 -- Server version	8.0.33
 
@@ -49,16 +49,16 @@ DROP TABLE IF EXISTS `dormitory`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `dormitory` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '楼号',
-  `fnum` int NOT NULL COMMENT '楼层数',
+  `id` int NOT NULL COMMENT '楼号',
+  `fnums` int NOT NULL COMMENT '楼层数',
   `location` varchar(20) NOT NULL COMMENT '位置',
   `mid` varchar(10) NOT NULL COMMENT '管理员编号',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
   KEY `fk_d` (`mid`),
   CONSTRAINT `fk_d` FOREIGN KEY (`mid`) REFERENCES `master` (`id`),
-  CONSTRAINT `dormitory_chk_1` CHECK ((`fnum` between 4 and 5))
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='宿舍楼表';
+  CONSTRAINT `dormitory_chk_1` CHECK ((`fnums` between 1 and 6))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='宿舍楼表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -67,7 +67,7 @@ CREATE TABLE `dormitory` (
 
 LOCK TABLES `dormitory` WRITE;
 /*!40000 ALTER TABLE `dormitory` DISABLE KEYS */;
-INSERT INTO `dormitory` VALUES (1,4,'aaaa','1190'),(2,5,'222','1190'),(3,4,'b区','1192');
+INSERT INTO `dormitory` VALUES (1,4,'a区','1190'),(2,5,'a区','1191'),(3,4,'b区','1192');
 /*!40000 ALTER TABLE `dormitory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -94,7 +94,7 @@ CREATE TABLE `master` (
 
 LOCK TABLES `master` WRITE;
 /*!40000 ALTER TABLE `master` DISABLE KEYS */;
-INSERT INTO `master` VALUES ('1190','张三','123',1),('1192','哈哈','123',2);
+INSERT INTO `master` VALUES ('1190','张三','123',1),('1191','欣欣','123',2),('1192','哈哈','123',2);
 /*!40000 ALTER TABLE `master` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -106,17 +106,17 @@ DROP TABLE IF EXISTS `reside`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `reside` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT '居住编号',
   `sid` varchar(10) NOT NULL COMMENT '学号',
-  `stname` varchar(20) NOT NULL COMMENT '学生姓名',
-  `rid` varchar(10) NOT NULL COMMENT '宿舍号',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`),
+  `rid` int NOT NULL COMMENT '宿舍号',
+  `did` int NOT NULL COMMENT '所在楼号',
+  PRIMARY KEY (`sid`,`rid`,`did`),
   UNIQUE KEY `sid` (`sid`),
-  KEY `fk_rd` (`rid`),
-  CONSTRAINT `fk_rd` FOREIGN KEY (`rid`) REFERENCES `room` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_s` FOREIGN KEY (`sid`) REFERENCES `stu` (`stno`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='居住表';
+  KEY `fk_rid` (`rid`),
+  KEY `fk_rdid` (`did`),
+  CONSTRAINT `fk_rdid` FOREIGN KEY (`did`) REFERENCES `room` (`did`) ON UPDATE CASCADE,
+  CONSTRAINT `fk_rid` FOREIGN KEY (`rid`) REFERENCES `room` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `fk_s` FOREIGN KEY (`sid`) REFERENCES `stu` (`stno`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='住宿';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -125,7 +125,6 @@ CREATE TABLE `reside` (
 
 LOCK TABLES `reside` WRITE;
 /*!40000 ALTER TABLE `reside` DISABLE KEYS */;
-INSERT INTO `reside` VALUES (30,'2200311014','哦豁','1-102'),(33,'2200311013','哦哦','1-102'),(34,'2200311012','哈哈','2-101'),(35,'2200311015','或哈','1-101'),(36,'2200311011','嘿嘿','1-101'),(37,'2200311016','嘻嘻哈','1-101'),(38,'2200311017','嘻哈或','1-101');
 /*!40000 ALTER TABLE `reside` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -137,16 +136,17 @@ DROP TABLE IF EXISTS `room`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `room` (
-  `id` varchar(10) NOT NULL COMMENT '宿舍号',
+  `id` int NOT NULL COMMENT '宿舍号',
+  `did` int NOT NULL COMMENT '所在楼号',
   `num` int NOT NULL COMMENT '可居住人数',
   `cnum` int NOT NULL COMMENT '目前居住的人数',
-  `did` int NOT NULL COMMENT '所在楼层',
-  `type` int NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`),
+  `type` int NOT NULL COMMENT '寝室类型',
+  PRIMARY KEY (`id`,`did`),
   KEY `fk_r` (`did`),
-  CONSTRAINT `fk_r` FOREIGN KEY (`did`) REFERENCES `dormitory` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `room_chk_1` CHECK ((`num` between 4 and 6))
+  CONSTRAINT `fk_r` FOREIGN KEY (`did`) REFERENCES `dormitory` (`id`),
+  CONSTRAINT `room_chk_1` CHECK ((`id` between 101 and 610)),
+  CONSTRAINT `room_chk_2` CHECK ((`did` between 1 and 20)),
+  CONSTRAINT `room_chk_3` CHECK ((`num` between 4 and 8))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='宿舍表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -156,7 +156,7 @@ CREATE TABLE `room` (
 
 LOCK TABLES `room` WRITE;
 /*!40000 ALTER TABLE `room` DISABLE KEYS */;
-INSERT INTO `room` VALUES ('1-101',4,4,1,1),('1-102',4,2,1,2),('2-101',4,1,2,2);
+INSERT INTO `room` VALUES (101,1,6,0,1),(102,1,4,0,1),(201,2,6,0,1),(202,2,6,0,1),(301,3,6,0,2),(302,3,6,0,2),(401,3,6,0,2);
 /*!40000 ALTER TABLE `room` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -187,7 +187,7 @@ CREATE TABLE `stu` (
 
 LOCK TABLES `stu` WRITE;
 /*!40000 ALTER TABLE `stu` DISABLE KEYS */;
-INSERT INTO `stu` VALUES ('2200311011','嘿嘿',1,2022,'软工','广西','1999-12-29',1),('2200311012','哈哈',2,2022,'计科','广西','1999-12-29',1),('2200311013','哦哦',2,2022,'计了','广西','1999-12-27',1),('2200311014','哦豁',2,2022,'软工','广西','1999-12-27',1),('2200311015','或哈',1,2022,'软工','广西','1999-12-28',1),('2200311016','嘻嘻哈',1,2022,'计科','广西','1999-12-28',1),('2200311017','嘻哈或',1,2022,'软工','广西','1999-12-28',1),('2200311019','makc',1,2022,'软工','广西','1999-12-28',0);
+INSERT INTO `stu` VALUES ('2200311020','tom0',1,2022,'计科','广西','2003-12-29',0),('2200311022','tom1',1,2022,'软工','广西','2003-12-29',0),('2200311023','tom2',2,2022,'计了','广西','2003-12-29',0);
 /*!40000 ALTER TABLE `stu` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -200,4 +200,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-27 22:20:54
+-- Dump completed on 2024-05-30 19:25:12
