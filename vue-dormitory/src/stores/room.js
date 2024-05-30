@@ -12,18 +12,25 @@ import {ref} from 'vue';
 export const roomInfo = defineStore('room',()=>{
     //1.定义描述token
     const room = ref('')
+    const roomDid= ref('')
 
     //2.定义修改token的方法
     const setRoom = (newRoom)=>{
         room.value = newRoom
+    }
+    const setDid = (did)=>{
+        roomDid.value = did
     }
 
     //3.定义移除token的方法
     const removeRoom = ()=>{
         room.value=''
     }
+    const removeDid = ()=>{
+        roomDid.value=''
+    }
     return {
-        room,setRoom,removeRoom
+        room,roomDid,setRoom,removeRoom,setDid,removeDid
     }
 }
 ,

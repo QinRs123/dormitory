@@ -29,7 +29,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public int delete(String id) {
+    public int delete(Integer id) {
 
         return roomMapper.delete(id);
     }
@@ -53,5 +53,20 @@ public class RoomServiceImpl implements RoomService {
     public List<String> getnotFull(Room search) {
         List<String> list=roomMapper.getnotFull(search);
         return list;
+    }
+
+    @Override
+    public int delete1(Integer id, Integer rid) {
+        return roomMapper.delete1(id,rid);
+    }
+
+    @Override
+    public Room getByIdAndDid(Integer id, Integer did) {
+        return  roomMapper.getByDidAndId(id,did);
+    }
+
+    @Override
+    public List<Room> getByGender(Integer gender) {
+        return roomMapper.getByGender(gender);
     }
 }

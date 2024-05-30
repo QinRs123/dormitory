@@ -18,7 +18,12 @@ public interface ResideService {
 
     Reside getBySid(String stno);
 
-    List<Reside> getByRid(String id);
+    List<Reside> getByRid(Integer id);
 
 
+    List<Reside> getByRidAndRid(Integer id, Integer rid);
+
+    int deleteBySid(String sid);
+
+    List<Reside> getByRidAndDid(Integer id, Integer did);
 }

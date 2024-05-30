@@ -37,12 +37,15 @@ const router =useRouter()
 const roomStore = roomInfo()
 const goback= ()=>{
     roomStore.removeRoom()
+    roomStore.removeDid()
     console.log(roomStore.room)
     router.push('/room')
 }
 
 const getAllReside = async () => {
-    let result = await resideByRidService(roomStore.room);
+    let result = await resideByRidService(roomStore.room,roomStore.roomDid);
+    console.log(roomStore.room)
+    console.log(roomStore.roomDid)
     console.log(result.data)
     reside.value = result.data;
 }
@@ -66,6 +69,7 @@ const setNull = () => {
 
 const addReside = async () => {
     ResideModel.value.rid=roomStore.room
+    ResideModel.value.did=roomStore.roomDid
     let result = await resideAddService(ResideModel.value)
     console.log(result.data)
     ElMessage.success(result.msg ? result.msg : '成功')
@@ -97,7 +101,7 @@ const updateReside = async (row) => {
 }
 
 const deleteResdie = async (row) => {
-    let result = await resideDeleteService(row.id)
+    let result = await resideDeleteService(row.sid)
     console.log(result.data)
     ElMessage.success(result.msg ? result.msg : '成功')
     getAllReside();
@@ -169,7 +173,7 @@ const chooserid=(rno)=>{
 
         <template #header>
             <div class="header">
-                <span>宿舍号 {{ roomStore.room }}</span>
+                <span>宿舍号{{ roomStore.roomDid  }} {{roomStore.room  }}</span>
                 <div class="extra">
                     <el-button type="button"
                         @click="goback">返回</el-button>
@@ -184,6 +188,7 @@ const chooserid=(rno)=>{
             <el-table-column label="学号" prop="sid"></el-table-column>
             <el-table-column label="学生姓名" prop="stname"></el-table-column>
             <el-table-column label="宿舍号" prop="rid"></el-table-column>
+            <el-table-column label="楼号" prop="did"></el-table-column>
             <el-table-column label="类型" prop="type">
                 <template #default="{ row }">
                     {{ row.type===1?"男寝":"女寝" }}

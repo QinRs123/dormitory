@@ -19,13 +19,24 @@ const stu = ref([
     },
 ])
 
-import { stuListService, stuAddService, updateAddService, deleteService, getRoommates } from '@/api/stu.js'
+import { stuListService, stuAddService, updateAddService, deleteService, getRoommates,getIsReside,getNoReside } from '@/api/stu.js'
 const getAllStu = async () => {
     let result = await stuListService();
     console.log(result.data)
     stu.value = result.data;
 }
 getAllStu();
+
+const hasReside =async () => {
+    let result = await getIsReside();
+    console.log(result.data)
+    stu.value = result.data;
+}
+const noReside =async () => {
+    let result = await getNoReside();
+    console.log(result.data)
+    stu.value = result.data;
+}
 
 
 import { Plus } from '@element-plus/icons-vue'
@@ -101,7 +112,7 @@ const enterRow = async (row, culumn, cell, event) => {
             // Vue.set(roommates, 'value', {});
         }
         else if (data.length != 0) {
-            data.unshift({ "stname": `宿舍号:${data[0].rid}` });
+            data.unshift({ "stname": `宿舍号:${data[0].did} ${data[0].rid} ` });
             roommates.value = data;
             box.style.display = "block"
             box.style.position = "fixed";
@@ -145,10 +156,28 @@ watch(roommates, (newValue, oldValue) => {
                 let y = e.clientY;
                 box.style.top = y + 15 + "px";
                 box.style.left = x + 15 + "px";
-                console.log(x,y)
             }
         });
     },{deep:true})
+
+
+
+import { StuInfo} from '@/stores/stu.js'
+import {useRouter} from 'vue-router'
+const router =useRouter()
+const showRoom=(row)=>{
+    let StuStore = StuInfo()
+    StuStore.setStno(row.stno)
+    StuStore.setGender(row.gender)
+    StuStore.setStname(row.stname)
+    console.log(StuStore.stno)
+    console.log(StuStore.gender)
+    console.log(StuStore.stname)
+    router.push('/stuRoomShowVue')
+}
+
+
+
 
 </script>
 
@@ -158,6 +187,8 @@ watch(roommates, (newValue, oldValue) => {
             <div class="header">
                 <span>学生表</span>
                 <div class="extra">
+                    <el-button type="primary" @click="hasReside">已入住</el-button>
+                    <el-button type="primary" @click="noReside">未已入住</el-button>
                     <el-button type="primary" @click="visibleDrawer = true, title = '添加'">添加</el-button>
                 </div>
             </div>
@@ -178,8 +209,9 @@ watch(roommates, (newValue, oldValue) => {
                     {{ row.isReside===1?"是":"否" }}
                 </template>
             </el-table-column>
-            <el-table-column label="操作" width="100">
+            <el-table-column label="操作" width="200">
                 <template #default="{ row }">
+                    <el-button :icon="Edit" circle plain type="button" @click="showRoom(row)"></el-button>
                     <el-button :icon="Edit" circle plain type="primary" @click="showDialog(row)"></el-button>
                     <el-button :icon="Delete" circle plain type="danger" @click="stuDelete(row)"></el-button>
                 </template>
@@ -229,7 +261,7 @@ watch(roommates, (newValue, oldValue) => {
             </el-form>
         </el-drawer>
     </el-card>
-    <div id="box">
+    <div id="box" >
         <ul>
             <li v-for="roommate in roommates">
                 {{ roommate.sid }} {{ roommate.stname }}
@@ -304,6 +336,7 @@ watch(roommates, (newValue, oldValue) => {
 #box {
     background-color: white;
     box-shadow: 0 0 9px rgba(0, 0, 0, 0.2);
+    width: 150px;
     border-radius: 5px;
     position: fixed;
     z-index: 1000;

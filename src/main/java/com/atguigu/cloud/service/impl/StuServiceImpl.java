@@ -43,4 +43,14 @@ public class StuServiceImpl implements StuService {
         List<String> list=stuMapper.getStu(search);
         return list;
     }
+
+    @Override
+    public List<Stu> getIsReside() {
+        return stuMapper.getIsReside();
+    }
+
+    @Override
+    public List<Stu> noReside() {
+        return stuMapper.noReside();
+    }
 }

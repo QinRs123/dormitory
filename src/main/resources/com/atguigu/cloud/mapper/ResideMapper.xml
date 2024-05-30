@@ -6,15 +6,12 @@
         update reside
         <set>
             <if test="sid !=null">
-                sid=#{sid}
+                did=#{did}
             </if>
             <if test="rid !=null">
                 ,rid =#{rid}
             </if>
-            <if test="stname !=null">
-                ,stname=#{stname}
-            </if>
         </set>
-        where id =#{id}
+        where sid =#{sid}
     </update>
 </mapper>

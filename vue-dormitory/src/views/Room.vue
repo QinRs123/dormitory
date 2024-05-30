@@ -63,7 +63,9 @@ const router =useRouter()
 const showRoom=(row)=>{
     let roomStore = roomInfo()
     roomStore.setRoom(row.id)
+    roomStore.setDid(row.did)
     console.log(roomStore.room)
+    console.log(roomStore.roomDid)
     router.push('/RoomShowVue')
 }
 
@@ -107,10 +109,10 @@ const stuDelete=async(row)=>{
         </template>
         <el-table :data="room" style="width: 100%">
             <el-table-column label="序号" width="100" type="index"> </el-table-column>
+            <el-table-column label="宿舍楼号" prop="did"></el-table-column>
             <el-table-column label="宿舍号" prop="id"></el-table-column>
             <el-table-column label="床位数" prop="num"></el-table-column>
             <el-table-column label="已入住人数" prop="cnum"></el-table-column>
-            <el-table-column label="宿舍楼号" prop="did"></el-table-column>
             <el-table-column label="类型" prop="type">
                 <template #default="{ row }">
                     {{ row.type===1?"男寝":"女寝" }}
@@ -135,24 +137,25 @@ const stuDelete=async(row)=>{
         <el-drawer v-model="visibleDrawer" :title="title" direction="rtl" size="50%">
             <!-- 添加文章表单 -->
             <el-form :model="roomModel" label-width="100px" >
+                <el-form-item label="宿舍楼号" >
+                    <el-input v-model="roomModel.did" placeholder="between 1 and 20"></el-input>
+                </el-form-item>
                 <el-form-item label="宿舍号" >
-                    <el-input v-model="roomModel.id" placeholder="宿舍号"></el-input>
+                    <el-input v-model="roomModel.id" placeholder="between 101 and 610"></el-input>
                 </el-form-item>
 
                 <el-form-item label="床位数" >
-                    <el-input v-model="roomModel.num" placeholder="床位数"></el-input>
+                    <el-input v-model="roomModel.num" placeholder="between 4 and 8"></el-input>
                 </el-form-item>
 <!-- 
                 <el-form-item label="已入住人数" >
                     <el-input v-model="roomModel.cnum" placeholder="已入住人数"></el-input>
                 </el-form-item> -->
 
-                <el-form-item label="宿舍楼号" >
-                    <el-input v-model="roomModel.did" placeholder="宿舍楼号"></el-input>
-                </el-form-item>
+               
                 
                 <el-form-item label="类型" >
-                    <el-input v-model="roomModel.type" placeholder="类型"></el-input>
+                    <el-input v-model="roomModel.type" placeholder="1  or 2"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="title==='添加'? addStu():updateStu()" >确定</el-button>

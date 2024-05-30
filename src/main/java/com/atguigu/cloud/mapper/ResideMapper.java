@@ -12,23 +12,32 @@ import java.util.List;
 @Mapper
 public interface ResideMapper {
 
-    @Insert("insert into reside(id,sid,stname,rid) values(null,#{sid},#{stname},#{rid}) ")
+    @Insert("insert into reside(did,sid,rid) values(#{did},#{sid},#{rid}) ")
     int add(Reside dorm);
 
     @Select("select * from reside")
     List<Reside> getAll();
 
-    @Delete("delete from reside where id= #{id}")
+    @Delete("delete from reside where did= #{id}")
     int delete(Integer id);
 
     int update(Reside master);
 
-    @Select("select * from reside where id= #{id}")
+    @Select("select * from reside where did= #{id}")
     Reside getById(Integer id);
 
     @Select("select  * from reside where sid=#{stno}")
     Reside getBySid(String stno);
 
     @Select("select  * from reside where rid=#{id}")
-    List<Reside> getByRid(String id);
+    List<Reside> getByRid(Integer id);
+
+    @Select("select  * from reside where rid=#{id} and did=#{id}")
+    List<Reside> getByRidAndRid(Integer id, Integer rid);
+
+    @Delete("delete from reside where sid= #{sid}")
+    int deleteBySid(String sid);
+
+    @Select("select  * from reside where rid=#{id} and did=#{did}")
+    List<Reside> getByRidAndDid(Integer id, Integer did);
 }

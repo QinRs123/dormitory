@@ -23,3 +23,10 @@ export const getStu = (search)=>{
 export const getRoommates = (row)=>{
     return request.post('/stu/getRoommates',row)
 }
+
+export const getIsReside = ()=>{
+    return request.get('/stu/getIsReside')
+}
+export const getNoReside = ()=>{
+    return request.get('/stu/getNoReside')
+}

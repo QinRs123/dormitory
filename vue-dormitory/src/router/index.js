@@ -11,6 +11,8 @@ import StuVue from '@/views/Stu.vue'
 import ResideVue from '@/views/Reside.vue'
 import RoomShowVue from '@/views/show/RoomShow.vue'
 import DormShowVue from '@/views/show/dormShow.vue'
+import stuRoomShowVue from '@/views/show/stuRoomShow.vue'
+
 
 
 //定义路由关系
@@ -24,6 +26,7 @@ const routes = [
         { path: '/reside', component: ResideVue },
         { path: '/RoomShowVue', component: RoomShowVue },
         { path: '/DormShowVue', component: DormShowVue },
+        { path: '/stuRoomShowVue', component: stuRoomShowVue },
     ]  },
     // { path: '/dormitory', component: dormitoryVue },
     // { path: '/room', component: RoomVue },

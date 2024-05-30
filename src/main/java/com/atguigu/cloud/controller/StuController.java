@@ -42,19 +42,27 @@ public class StuController {
         List<Stu> list =stuService.getAll();
         return Result.success(list);
     }
+    @GetMapping("/getIsReside")
+    public Result getIsReside(){
+        List<Stu> list =stuService.getIsReside();
+        return Result.success(list);
+    }
+    @GetMapping("/getNoReside")
+    public Result noReside(){
+        List<Stu> list =stuService.noReside();
+        return Result.success(list);
+    }
 
-    @GetMapping("/delete/{id}")
-    public Result delete(@PathVariable("id") String id){
-//        System.out.println(id);
-
-        Stu stu = stuService.getById(id);
+    @GetMapping("/delete/{Stno}")
+    public Result delete(@PathVariable("Stno") String sid){
+        Stu stu = stuService.getById(sid);
         if(stu.getIsReside()==1){
             Reside reside=resideService.getBySid(stu.getStno());
-            Room room = roomService.getById(reside.getRid());
+            Room room = roomService.getByIdAndDid(reside.getRid(),reside.getDid());
             room.setCnum(room.getCnum()-1);
             roomService.update(room);
         }
-        int k= stuService.delete(id);
+        int k= stuService.delete(sid);
         if(k!=0){
             return Result.success(k);
         }

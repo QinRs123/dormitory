@@ -9,7 +9,7 @@ public interface RoomService {
 
     List<Room> getAll();
 
-    int delete(String id);
+    int delete(Integer id);
 
     int update(Room master);
 
@@ -18,4 +18,10 @@ public interface RoomService {
     List<Room> getByDid(Integer id);
 
     List<String> getnotFull(Room search);
+
+    int delete1(Integer id, Integer rid);
+
+    Room getByIdAndDid(Integer id, Integer rid);
+
+    List<Room> getByGender(Integer gender);
 }

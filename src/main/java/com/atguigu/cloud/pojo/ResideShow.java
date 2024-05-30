@@ -8,11 +8,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResideShow {
-    private Integer id;
+    private Integer id; //
     private  String sid;
     private String stname;
-
-    private String rid;
+    private Integer rid; //
     private  Integer did;
     private  Integer type;
 }

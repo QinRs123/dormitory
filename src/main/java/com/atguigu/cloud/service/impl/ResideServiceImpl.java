@@ -69,7 +69,22 @@ public class ResideServiceImpl implements ResideService {
     }
 
     @Override
-    public List<Reside> getByRid(String id) {
+    public List<Reside> getByRid(Integer id) {
         return resideMapper.getByRid(id);
+    }
+
+    @Override
+    public List<Reside> getByRidAndRid(Integer id, Integer rid) {
+        return resideMapper.getByRidAndRid(id,rid);
+    }
+
+    @Override
+    public int deleteBySid(String sid) {
+        return resideMapper.deleteBySid(sid);
+    }
+
+    @Override
+    public List<Reside> getByRidAndDid(Integer id, Integer did) {
+        return resideMapper.getByRidAndDid(id,did);
     }
 }

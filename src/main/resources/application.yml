@@ -4,6 +4,6 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/db_dormitory  #jdbc:mysql://localhost:3306/db2024
+    url: jdbc:mysql://localhost:3306/dormitory  #jdbc:mysql://localhost:3306/db2024
     username: root
-    password: 123456
+    password: 123456   #1234565wmh

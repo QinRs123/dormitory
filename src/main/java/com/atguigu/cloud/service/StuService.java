@@ -16,4 +16,8 @@ public interface StuService {
     Stu getById(String sid);
 
     List<String> getStu(Stu search);
+
+    List<Stu> getIsReside();
+
+    List<Stu> noReside();
 }

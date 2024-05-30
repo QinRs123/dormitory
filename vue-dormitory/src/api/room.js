@@ -23,3 +23,6 @@ export const getnotFull = (search)=>{
 export const getByDidService = (id)=>{
     return request.get('/room/getByDid'+'/'+id)
 }
+export const getByGenderService = (gender)=>{
+    return request.get('/room/getByGender'+'/'+gender)
+}

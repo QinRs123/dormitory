@@ -26,4 +26,10 @@ public interface StuMapper {
     Stu getById(String sid);
 //    @Select(("select stno from stu where isReside=0"))
     List<String> getStu(Stu search);
+
+    @Select("select * from stu where isReside=1")
+    List<Stu> getIsReside();
+
+    @Select("select * from stu where isReside=0")
+    List<Stu> noReside();
 }

@@ -18,6 +18,9 @@ export const resideAddService = (ResideModel)=>{
 export const resideUpdateService = (ResideModel)=>{
     return request.post('/reside/update',ResideModel)
 }
+export const resideChangeService = (ResideModel)=>{
+    return request.post('/reside/change',ResideModel)
+}
 
 export const resideDeleteService = (id)=>{
     return request.get('/reside/delete'+'/'+id)
@@ -31,6 +34,10 @@ export const resideShowGirlsService = ()=>{
     return request.get('/reside/getGirls')
 }
 
-export const resideByRidService = (id)=>{
-    return request.get('/reside/getByRid'+'/'+id)
+export const resideByRidService = (id,did)=>{
+    return request.get('/reside/getByRid'+'/'+id+'/'+did)
+}
+
+export const resideBySidService = (sid)=>{
+    return request.get('/reside/getBySid'+'/'+sid)
 }

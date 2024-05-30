@@ -42,8 +42,55 @@ public class RoomController {
         return Result.success(list);
     }
 
+
+    @GetMapping("/getByGender/{gender}")
+    public Result getByGender(@PathVariable("gender") Integer gender){
+        List<Room> list=roomService.getByGender(gender);
+        return Result.success(list);
+    }
+
+    @GetMapping("/delete/{did}/{id}")
+    public Result delete1(@PathVariable("id") Integer id,@PathVariable("did") Integer did){
+        System.out.println(did+" "+id);
+        List<Reside> list=resideService.getByRidAndRid(id,did);
+        if(list!=null||list.size()!=0){
+            for (Reside reside : list) {
+                Stu stu = stuService.getById(reside.getSid());
+                stu.setIsReside(0);
+                stuService.update(stu);
+            }
+        }
+        int k= roomService.delete1(id,did);
+        if(k!=0){
+            return Result.success(k);
+        }
+        return Result.error("删除失败");
+    }
+
+
+
+    @PostMapping("/update")
+    public Result update(@RequestBody Room master){
+        int k= roomService.update(master);
+        if(k!=0){
+            return Result.success(k);
+        }
+        return Result.error("修改失败");
+    }
+
+    @GetMapping("/getByDid/{id}/{did}")
+    public Result getByIdAndDid(@PathVariable("id") Integer id,@PathVariable("did") Integer did){
+        System.out.println(id+"   "+did);
+       Room list=roomService.getByIdAndDid(id,did);
+        return Result.success(list);
+    }
+
+
+
+
+
     @GetMapping("/delete/{id}")
-    public Result delete(@PathVariable("id") String id){
+    public Result delete(@PathVariable("id") Integer id){
 
         List<Reside> list=resideService.getByRid(id);
         if(list!=null||list.size()!=0){
@@ -67,14 +114,7 @@ public class RoomController {
     }
 //
     //
-    @PostMapping("/update")
-    public Result update(@RequestBody Room master){
-        int k= roomService.update(master);
-        if(k!=0){
-            return Result.success(k);
-        }
-        return Result.error("修改失败");
-    }
+
 
     @PostMapping("/getnotFull")
     public Result getnotFull(@RequestBody Room search){

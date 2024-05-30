@@ -49,7 +49,7 @@ const ResideModel = ref({
 
 const setNull = () => {
     ResideModel.value.sid = '',
-        ResideModel.value.rid = ''
+    ResideModel.value.rid = ''
     dialogVisible.value = false
 }
 
@@ -73,7 +73,7 @@ const showDialog = (row) => {
     title.value = '修改';
     ResideModel.value.sid = row.sid
     ResideModel.value.rid = row.rid
-    ResideModel.value.id = row.id
+    ResideModel.value.did = row.did
 }
 
 const updateReside = async (row) => {
@@ -86,7 +86,7 @@ const updateReside = async (row) => {
 }
 
 const deleteResdie = async (row) => {
-    let result = await resideDeleteService(row.id)
+    let result = await resideDeleteService(row.sid)
     console.log(result.data)
     ElMessage.success(result.msg ? result.msg : '成功')
     getAllReside();
@@ -186,13 +186,13 @@ const showGirls=async()=>{
             <el-table-column label="序号" width="100" type="index"> </el-table-column>
             <el-table-column label="学号" prop="sid"></el-table-column>
             <el-table-column label="学生姓名" prop="stname"></el-table-column>
+            <el-table-column label="楼号" prop="did"></el-table-column>
             <el-table-column label="宿舍号" prop="rid"></el-table-column>
             <el-table-column label="类型" prop="type">
                 <template #default="{ row }">
                     {{ row.type===1?"男寝":"女寝" }}
                 </template>
             </el-table-column>
-            <el-table-column label="宿舍楼号" prop="did"></el-table-column>
             <el-table-column label="操作" width="100">
                 <template #default="{ row }">
                     <el-button :icon="Edit" circle plain type="primary" @click="showDialog(row)"></el-button>
@@ -225,6 +225,10 @@ const showGirls=async()=>{
                         </li>
                     </ul>
                 </el-form-item>
+                <el-form-item label="类型" >
+                    <el-input v-model="ResideModel.did" placeholder="楼号"></el-input>
+                </el-form-item>
+
             </el-form>
             <template #footer>
                 <span class="dialog-footer">
@@ -234,17 +238,8 @@ const showGirls=async()=>{
             </template>
         </el-dialog>
 
-        <!-- 添加分类弹窗 -->
-        <!-- <el-dialog v-model="dialogVisible1" :title="title" width="30%" >
-                <el-form :model="ResideModel" :rules="rules" label-width="100px" style="padding-right: 30px">
-                    <el-form-item label="test" prop="sid">
-                        <el-input v-model="ResideModel.sid" minlength="1" maxlength="10"></el-input>
-                    </el-form-item>
-                    <el-form-item label="test" prop="rid">
-                        <el-input v-model="ResideModel.rid" minlength="1" maxlength="15"></el-input>
-                    </el-form-item>
-                </el-form>
-            </el-dialog> -->
+
+        
     </el-card>
 </template>
 

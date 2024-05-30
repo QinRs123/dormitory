@@ -12,14 +12,11 @@
             <if test="cnum !=null">
                 ,cnum =#{cnum}
             </if>
-            <if test="did !=null">
-                ,did=#{did}
-            </if>
             <if test="type !=null">
                 ,type=#{type}
             </if>
         </set>
-        where id =#{id}
+        where id =#{id} and did =#{did}
     </update>
     <select id="getnotFull" resultType="String">
         select id from room where num>cnum

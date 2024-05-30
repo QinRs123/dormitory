@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Room {
-    private String id;
+    private Integer id;
     private Integer num;
     private Integer cnum;
     private  Integer did;

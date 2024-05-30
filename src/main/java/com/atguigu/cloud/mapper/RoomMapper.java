@@ -18,7 +18,7 @@ public interface RoomMapper {
     List<Room> getAll();
 
     @Delete("delete from room where id=#{id}")
-    int delete(String id);
+    int delete(Integer id);
 
     int update(Room master);
 
@@ -29,4 +29,13 @@ public interface RoomMapper {
     List<Room> getByDid(Integer id);
 //    @Select("select id from room where cnum<num and concat('%',)"
     List<String> getnotFull(Room search);
+
+    @Delete("delete from room where id=#{id} and did=#{did}")
+    int delete1(Integer id, Integer did);
+
+    @Select("select * from room where did= #{did} and id=#{id}")
+    Room getByDidAndId(Integer id, Integer did);
+
+    @Select("select * from room where type= #{gender} and cnum<num ")
+    List<Room> getByGender(Integer gender);
 }
